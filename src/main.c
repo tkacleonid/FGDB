@@ -105,8 +105,13 @@ void on_request (req_t *req) {
 	// }
 }
 
-static void idle_cb(EV_P_ ev_periodic *w, int revents) {
-	// fprintf(stderr, "Not blocked\n");
+int counter = 0;
+
+static void idle_cb (EV_P_ ev_io *w, int revents) {
+	counter++;
+	char* b;
+	read(w->fd, b, 1);
+	fprintf(stderr, "%d event:%d %s\n", counter, revents, b);
 }
 
 void * transaction_queue_worker (void * args) {
@@ -166,15 +171,14 @@ int init_hashmap (size_t max_keys) {
 int start_server() {
 	struct ev_loop *loop = ev_default_loop(0);
 
-	// ev_idle idle_watcher;
-	// ev_idle_init(&idle_watcher, idle_cb);
-	// ev_idle_start(loop, &idle_watcher);
-
-	struct ev_periodic every_few_seconds;
-	ev_periodic_init(&every_few_seconds, idle_cb, 0, 0.01, 0);
-	ev_periodic_start(EV_A_ &every_few_seconds);
-
 	ev_server server = server_init("0.0.0.0", 2016, INET);
+
+	pipe(server.wake_pipe);
+	setnonblock(server.wake_pipe[0]);
+	ev_io wake_w;
+	ev_io_init(&wake_w, idle_cb, server.wake_pipe[0], EV_READ);
+	ev_io_start(loop, &wake_w);
+
 	server.on_request = on_request;
 	server_listen(loop, &server);
 	ev_loop(loop, 0);

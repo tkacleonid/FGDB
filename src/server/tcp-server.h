@@ -12,7 +12,7 @@ typedef struct request req_t;
 struct ev_server {
 	ev_io io;
 	int fd;
-	int reqid;
+	int wake_pipe[2];
 	enum socket_type {
 		UNIX,
 		INET
