@@ -14,8 +14,9 @@ lru_node_t* page_to_lru (arena_page_t* p) {
 
 lru_queue_t* new_queue(void) {
 	lru_queue_t* lq = malloc(sizeof(lru_queue_t));
-	lq->first = NULL;
-	lq->last  = NULL;
+	lq->first  = NULL;
+	lq->last   = NULL;
+	lq->queued = 0;
 	return lq;
 }
 
@@ -34,6 +35,7 @@ void push_lru(lru_queue_t* q, arena_page_t* p) {
 	q->last->prev = ln;
 	ln->next = q->last;
 	q->last = ln;
+	q->queued++;
 }
 
 arena_page_t* pop_lru(lru_queue_t* q) {
@@ -50,6 +52,7 @@ arena_page_t* pop_lru(lru_queue_t* q) {
 		}
 	}
 	p = cur_node->page;
+	q->queued--;
 	destroy_lru_node(cur_node);
 	return p;
 }

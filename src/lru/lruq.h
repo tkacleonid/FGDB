@@ -12,6 +12,7 @@ typedef struct lru_node {
 } lru_node_t;
 
 typedef struct {
+	uint32_t    queued;
 	lru_node_t* first;
 	lru_node_t* last;
 } lru_queue_t;

@@ -64,6 +64,8 @@ arena_t * arena_create(uint32_t pages);
 arena_page_t * align2page(arena_node_t * node);
 uint64_t offsetFromPage (arena_node_t * node);
 
+uint64_t dump_page(arena_page_t * page);
+
 
 // typedef struct {
 // 	arena_page_t * page;

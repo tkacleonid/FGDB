@@ -93,3 +93,8 @@ inline uint64_t offsetFromPage (arena_node_t * node) {
 	arena_page_t * _page = align2page(node);
 	return (uint64_t) _node - (uint64_t) _page;
 }
+
+// mock function for now
+uint64_t dump_page(arena_page_t * page) {
+	return 0;
+}
