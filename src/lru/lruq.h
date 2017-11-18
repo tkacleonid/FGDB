@@ -5,13 +5,13 @@
 #include "arena/arena.h"
 
 typedef struct lru_node {
-	arena_page_t* page;
-	uint32_t timestamp;
-	lru_node_t* prev;
-	lru_node_t* next;
+	arena_page_t*    page;
+	uint32_t         timestamp;
+	struct lru_node* prev;
+	struct lru_node* next;
 } lru_node_t;
 
-typedef struct lru_queue {
+typedef struct {
 	lru_node_t* first;
 	lru_node_t* last;
 } lru_queue_t;
@@ -29,3 +29,5 @@ arena_page_t* pop_lru(lru_queue_t* q);
 void destroy_lru_node(lru_node_t* ln);
 
 void destroy_lru_queue(lru_queue_t* lq);
+
+#endif

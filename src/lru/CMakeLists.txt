@@ -13,4 +13,4 @@ set(lruq_sources
 	)
 
 add_library(lruq STATIC ${lruq_sources})
-target_link_libraries(lruq buddy)
+target_link_libraries(lruq)

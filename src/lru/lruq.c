@@ -1,5 +1,6 @@
 #include "lruq.h"
-#include <stlib.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 
 lru_node_t* page_to_lru (arena_page_t* p) {
@@ -13,7 +14,7 @@ lru_node_t* page_to_lru (arena_page_t* p) {
 
 lru_queue_t* new_queue(void) {
 	lru_queue_t* lq = malloc(sizeof(lru_queue_t));
-	lq->fisrt = NULL;
+	lq->first = NULL;
 	lq->last  = NULL;
 	return lq;
 }
@@ -48,7 +49,7 @@ arena_page_t* pop_lru(lru_queue_t* q) {
 			return NULL;
 		}
 	}
-	p = cur_page->page;
+	p = cur_node->page;
 	destroy_lru_node(cur_node);
 	return p;
 }
@@ -69,4 +70,3 @@ void destroy_lru_queue(lru_queue_t* q) {
 	}
 	free(q);
 }
-
